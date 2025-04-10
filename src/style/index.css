@@ -1,0 +1,21 @@
+@import url('reset.css');
+
+:root {
+  --danger: rgb(179, 24, 133);
+  --danger-fg: white;
+
+  --accent: rgb(24, 179, 179);
+  --accent-border: rgb(2, 33, 48);
+  --accent-bg: paleturquoise;
+  --accent-fg: black;
+  --accent-shadow: rgb(238, 175, 175);
+}
+
+body {
+  font-family: 'Inter';
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Rubik';
+  font-weight: bold;
+} 

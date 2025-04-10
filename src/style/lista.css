@@ -1,0 +1,183 @@
+.compras {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--accent-bg);
+    min-height: 100dvh;
+    position: relative;
+
+    & input[type="text"], input[type="number"] {
+        padding: 0 .5em;
+        border-width: 2px 0;
+        border-color: transparent;
+        border-bottom-color: black;
+
+        &:disabled {
+            border-bottom-color: transparent;
+        }
+    }
+
+    & > form {
+        display: grid;
+        background-color: white;
+        box-shadow: 0 0 0 2px black, 0 0 2rem #2004;
+        position: sticky;
+        bottom: 0;
+        grid-template:
+            "inputs inputs" auto
+            "colors agregar" auto
+            / 1fr auto;
+        /* border: 2px solid black; */
+        border-radius: 1rem 1rem 0 0;
+        padding: 1.5rem;
+        gap: 1rem;
+        margin-top: auto;
+    
+        & input:focus {
+            outline: 2px solid var(--accent);
+        }
+
+        & button {
+            justify-self: end;
+            grid-area: agregar;
+
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+            border-radius: 1rem;
+            height: 3rem;
+            padding: 0 1.5rem;
+            border: 2px solid var(--accent-border);
+            box-shadow: .25rem .25rem var(--accent-shadow);
+            background-color: var(--accent-bg);
+            font-weight: bold;
+        }
+    }
+    & > ul {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 1rem 5rem 1rem;
+        gap: 1rem;
+    }
+
+    & > ul, > form {
+        width: 100%;
+        max-width: 40rem;
+    }
+
+    & h2 {
+        font-size: 1.5
+        rem;
+    }
+}
+
+.colors {
+    grid-area: colors;
+}
+
+.producto-inputs {
+    grid-area: inputs;
+    display: grid;
+    grid-template:
+        "nombre cantidad" auto 
+        / 1fr auto;
+    justify-items: end;
+    align-items: inherit;
+    font-size: 1.25rem;
+
+    gap: inherit;
+    flex-grow: 1;
+
+    & input[type="text"], input[type="number"] {
+        width: 100%;
+    }
+    & input[type="text"], input[type="number"], p {
+        min-height: 2.5rem;
+        justify-self: start;
+    }
+    & .nombre {
+        flex-grow: 1;
+    }
+    & .cantidad {
+        display: flex;
+        align-items: center;
+        align-self: end;
+        gap: inherit;
+
+        & * {
+            flex-shrink: 0;
+        }
+        & input, p {
+            width: 3rem;
+        }
+    }
+}
+
+@media screen and (max-width: 20rem) {
+    .producto-inputs {
+        grid-template:
+            "nombre" auto
+            "cantidad" auto
+            / 1fr;
+
+    }
+}
+
+.item-lista {
+    list-style: none;
+
+    display: flex;
+    align-items: start;
+    border: 2px solid black;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    gap: .5rem;
+
+    & input[type="checkbox"] {
+        visibility: hidden;
+        position: absolute;
+        left: -100%;
+        top: -100%;
+    }
+
+    & p[data-comprado="true"] {
+        text-decoration: line-through;
+        opacity: .5;
+    }
+
+    & .actions {
+        display: flex;
+        gap: .5rem;
+    }
+
+    & button, .checkbox {
+        display: grid;
+        place-content: center;
+        
+        height: 2.5rem;
+        width: 2.5rem;
+        border-radius: .5rem;
+        background-color: var(--accent-bg);
+        color: var(--accent-fg);
+        flex-shrink: 0;
+    }
+
+    & label {
+        display: flex;
+        align-items: center;
+    }
+
+    & button.danger {
+        background-color: var(--danger);
+        color: var(--danger-fg);
+    }
+
+    & .checkbox {
+        color: transparent;
+    }
+    & .checkbox:has(input:checked) {
+        background-color: black;
+        color: paleturquoise
+    }
+}
