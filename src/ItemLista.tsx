@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import Edit from '~icons/hugeicons/pencil-edit-01'
 import Remove from '~icons/hugeicons/remove-01'
 import Tick from '~icons/hugeicons/tick-02'
@@ -20,7 +20,7 @@ export interface ItemListaProps {
 }
 
 export default function ItemLista (props: ItemListaProps) {
-    let [editing, setEditing] = useState(false)
+    const [editing, setEditing] = useState(false)
 
     function confirmarEdit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
