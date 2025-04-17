@@ -5,20 +5,24 @@ import Add from '~icons/hugeicons/add-01'
 import Multiplication from '~icons/hugeicons/multiplication-sign'
 import { parseCantidad } from './util'
 
-function cargarLista() {
-    return JSON.parse(localStorage.getItem("lista") ?? "[]")
+function cargarLista(id: string) {
+    return JSON.parse(localStorage.getItem("lista-" + id) ?? "[]")
 }
 
-function guardarLista(lista: ItemListaData[]) {
-    return localStorage.setItem("lista", JSON.stringify(lista))
+function guardarLista(id: string, lista: ItemListaData[]) {
+    return localStorage.setItem("lista-" + id, JSON.stringify(lista))
 }
 
-export default function Lista() {
-    const [lista, setLista] = useState<ItemListaData[]>(cargarLista())
+export interface ListaProps {
+    id: string
+}
+
+export default function Lista(props: ListaProps) {
+    const [lista, setLista] = useState<ItemListaData[]>(cargarLista(props.id))
     const [ultimaID, setUltimaID] = useState<number>(Math.max(0, ...lista.map((item) => item.uid)))
 
     useEffect(() => {
-        guardarLista(lista)
+        guardarLista(props.id, lista)
     }, [lista])
 
     function agregarItem(e: FormEvent<HTMLFormElement>) {
@@ -101,7 +105,7 @@ export default function Lista() {
                     {' '}
                 </div>
                 <div className="actions">
-                    <button>
+                    <button className='pretty-button'>
                         <Add />
                         Agregar
                     </button>

@@ -1,0 +1,90 @@
+dialog {
+    background-color: transparent;
+    transform: translateY(100%);
+    opacity: 0;
+    margin: auto auto 0.5rem auto;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 0;
+    transition:
+        opacity 0.3s linear,
+        transform 0.5s cubic-bezier(0.17, 0.67, 0.12, 1),
+        overlay 0.3s ease-out allow-discrete,
+        display 0.3s ease-out allow-discrete;
+}
+
+dialog[open] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@starting-style {
+    dialog[open] {
+        opacity: 0;
+        transform: translateY(200%);
+    }
+}
+
+dialog::backdrop {
+    background-color: rgb(0 0 0 / 0%);
+    transition:
+        display 0.7s allow-discrete,
+        overlay 0.7s allow-discrete,
+        background-color 0.7s;
+}
+
+dialog[open]::backdrop {
+    background-color: rgb(0 0 0 / 25%);
+}
+
+@starting-style {
+    dialog[open]::backdrop {
+        background-color: rgb(0 0 0 / 0%);
+    }
+}
+
+.dialog-content {
+    position: relative;
+    background-color: white;
+    border-radius: 1rem;
+    /* padding: 2rem; */
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* gap: 0.5rem; */
+    /* text-align: center; */
+    width: calc(100vw - 2rem);
+    max-width: 30rem;
+
+    h1 {
+        font: bold 1.5rem "Poppins";
+
+        span {
+            color: var(--c50);
+        }
+
+        margin-bottom: 0.5em;
+    }
+
+    .rematch {
+        background-color: var(--red);
+    }
+
+    .dismiss {
+        background-color: #eee;
+        color: black;
+    }
+
+    a {
+        place-self: center;
+    }
+}
+
+.dialog-content::before {
+    content: "";
+    display: block;
+    background-color: black;
+    position: absolute;
+    top: -100%;
+    width: 100%;
+    height: 100%;
+}

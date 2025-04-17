@@ -1,21 +1,62 @@
 @import url('reset.css');
+@import url('dialog.css');
+@import url('add-lista.css');
 
 :root {
-  --danger: rgb(179, 24, 133);
-  --danger-fg: white;
+    --danger: rgb(179, 24, 133);
+    --danger-fg: white;
 
-  --accent: rgb(24, 179, 179);
-  --accent-border: rgb(2, 33, 48);
-  --accent-bg: paleturquoise;
-  --accent-fg: black;
-  --accent-shadow: rgb(238, 175, 175);
+    --accent: rgb(24, 179, 179);
+    --accent-border: rgb(2, 33, 48);
+    --accent-bg: paleturquoise;
+    --accent-fg: black;
+    --accent-shadow: rgb(238, 175, 175);
 }
 
 body {
-  font-family: 'Inter';
+    font-family: 'Inter';
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Rubik';
-  font-weight: bold;
-} 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Rubik';
+    font-weight: bold;
+}
+
+main {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100dvh;
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 0 .5em;
+    border-width: 2px 0;
+    border-color: transparent;
+    border-bottom-color: black;
+
+    &:disabled {
+        border-bottom-color: transparent;
+    }
+}
+
+.pretty-button {
+    justify-self: end;
+    grid-area: agregar;
+
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    border-radius: 1rem;
+    height: 3rem;
+    padding: 0 1.5rem;
+    border: 2px solid var(--accent-border);
+    box-shadow: .25rem .25rem var(--accent-shadow);
+    background-color: var(--accent-bg);
+    font-weight: bold;
+}
