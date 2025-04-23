@@ -34,7 +34,7 @@ export async function poblarDB() {
     }
 }
 
-await poblarDB()
+poblarDB()
 
 export async function todasLasListas() {
     return await db.listas.toArray()
