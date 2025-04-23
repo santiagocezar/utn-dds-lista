@@ -38,7 +38,7 @@ function App() {
                 <header className="main-header">
                     <Tabs.List className="tab-list">
                         <div className="tab-list-scroll">
-                            {listas.map((lista, i) => (
+                            {listas.map((lista) => (
                                 <Tabs.Trigger
                                     onFocus={(e) => e.target instanceof HTMLElement && e.target.scrollIntoView({ behavior: "smooth" })}
                                     className="tab" key={lista.id} value={"" + lista.id}
