@@ -4,25 +4,16 @@ import Remove from '~icons/hugeicons/remove-01'
 import Tick from '~icons/hugeicons/tick-02'
 import Multiplication from '~icons/hugeicons/multiplication-sign'
 import { parseCantidad } from './util'
-
-export interface ItemListaData {
-    uid: number
-    nombre: string
-    cantidad: number
-    comprado: boolean
-}
+import { borrarItem, editarItem, ItemData } from './lista'
 
 export interface ItemListaProps {
-    item: ItemListaData
-
-    onChange(next: ItemListaData): void
-    onDelete(): void
+    item: ItemData
 }
 
 export default function ItemLista (props: ItemListaProps) {
     const [editing, setEditing] = useState(false)
 
-    function confirmarEdit(e: FormEvent<HTMLFormElement>) {
+    async function confirmarEdit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
 
         if (!(e.target instanceof HTMLFormElement)) return
@@ -35,10 +26,9 @@ export default function ItemLista (props: ItemListaProps) {
 
             if (!nombre) return
             
-            props.onChange({
+            await editarItem({
                 ...props.item,
-                nombre,
-                cantidad,
+                nombre, cantidad,
             })
         }
 
@@ -48,7 +38,7 @@ export default function ItemLista (props: ItemListaProps) {
 
     return <li className="item-lista">
         {editing ? (
-            <button className='danger' onClick={() => props.onDelete()}>
+            <button className='danger' onClick={() => borrarItem(props.item.id)}>
                 <Remove />
             </button>
         ) : (
@@ -56,7 +46,12 @@ export default function ItemLista (props: ItemListaProps) {
                 <input 
                     checked={props.item.comprado}
                     type="checkbox"
-                    onChange={(e) => props.onChange({...props.item, comprado: e.target.checked})}
+                    onChange={(e) => 
+                        editarItem({
+                            ...props.item,
+                            comprado: e.target.checked
+                        })
+                    }
                 />
                 <Tick />
             </label>

@@ -2,13 +2,13 @@ dialog {
     background-color: transparent;
     transform: translateY(100%);
     opacity: 0;
-    margin: auto auto 0.5rem auto;
+    margin: 4.5rem auto auto auto;
     max-width: 100%;
     max-height: 100%;
     padding: 0;
     transition:
         opacity 0.3s linear,
-        transform 0.5s cubic-bezier(0.17, 0.67, 0.12, 1),
+        transform 0.3s cubic-bezier(0.17, 0.67, 0.12, 1),
         overlay 0.3s ease-out allow-discrete,
         display 0.3s ease-out allow-discrete;
 }
@@ -21,12 +21,13 @@ dialog[open] {
 @starting-style {
     dialog[open] {
         opacity: 0;
-        transform: translateY(200%);
+        transform: translateY(-100%);
     }
 }
 
 dialog::backdrop {
     background-color: rgb(0 0 0 / 0%);
+    backdrop-filter: blur(2px);
     transition:
         display 0.7s allow-discrete,
         overlay 0.7s allow-discrete,

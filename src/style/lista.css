@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     background-color: var(--accent-bg);
+    border-radius: 1rem 1rem 0 0;
     position: relative;
     height: 100%;
 
@@ -24,6 +25,10 @@
     
         & input:focus {
             outline: 2px solid var(--accent);
+        }
+        .pretty-button {
+            justify-self: end;
+            grid-area: agregar;
         }
     }
     & > ul {

@@ -3,29 +3,43 @@ import './style/lista.css'
 import ItemLista, { ItemListaData } from './ItemLista'
 import Add from '~icons/hugeicons/add-01'
 import Multiplication from '~icons/hugeicons/multiplication-sign'
+import Remove from '~icons/hugeicons/remove-01'
 import { parseCantidad } from './util'
 
-function cargarLista(id: string) {
-    return JSON.parse(localStorage.getItem("lista-" + id) ?? "[]")
-}
-
-function guardarLista(id: string, lista: ItemListaData[]) {
-    return localStorage.setItem("lista-" + id, JSON.stringify(lista))
-}
+import { borrarItem, editarItem, editarLista, ListaData, nuevoItem, obtenerItemsPara } from './lista'
+import { useLiveQuery } from 'dexie-react-hooks'
 
 export interface ListaProps {
-    id: string
+    lista: ListaData
 }
 
 export default function Lista(props: ListaProps) {
-    const [lista, setLista] = useState<ItemListaData[]>(cargarLista(props.id))
-    const [ultimaID, setUltimaID] = useState<number>(Math.max(0, ...lista.map((item) => item.uid)))
+    const items = useLiveQuery(() => obtenerItemsPara(props.lista.id))
 
-    useEffect(() => {
-        guardarLista(props.id, lista)
-    }, [lista])
+    const [editing, setEditing] = useState(false)
 
-    function agregarItem(e: FormEvent<HTMLFormElement>) {
+    async function editarInfo(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+
+        if (!(e.target instanceof HTMLFormElement)) return
+
+        if (editing) {
+            
+            const data = new FormData(e.target)
+            const nombre = data.get("nombre")?.toString()
+
+            if (!nombre) return
+            
+            await editarLista({
+                ...props.lista,
+                nombre,
+            })
+        }
+
+        setEditing(!editing)
+    }
+
+    async function onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
 
         if (!(e.target instanceof HTMLFormElement)) return
@@ -36,64 +50,66 @@ export default function Lista(props: ListaProps) {
         
         if (!nombre) return
         
-        setLista([...lista, {
-            uid: ultimaID,
+        await nuevoItem({
+            lista: props.lista.id,
             nombre,
             cantidad,
             comprado: false
-        }])
-
-        setUltimaID(ultimaID + 1)
+        })
 
         e.target.reset()
     }
 
-    function cambiarItem(i: number, nuevo: ItemListaData) {
-        const nuevaLista = lista.slice()
-        if (nuevaLista[i].comprado != nuevo.comprado) {
-            nuevaLista.splice(i, 1)
-            nuevaLista.push(nuevo)
-        } else {
-            nuevaLista[i] = nuevo
-        }
-        setLista(nuevaLista)
-    }
+    // const indexado = items.map((item, i) => ({
+    //     item, i
+    // }))
 
-    function borrarItem(i: number) {
-        const nuevaLista = lista.slice()
-        nuevaLista.splice(i, 1)
-        setLista(nuevaLista)
-    }
-
-    const indexado = lista.map((item, i) => ({
-        item, i
-    }))
-
-    const pendiente = indexado.filter(({ item }) => !item.comprado)
-    const comprado = indexado.filter(({ item }) => item.comprado)
+    const pendiente = items?.filter((item) => !item.comprado) ?? []
+    const comprado = items?.filter((item) => item.comprado) ?? []
 
     return (
         <div className="compras">
+            {/* <form className="titulo" action="#" onSubmit={editarInfo}>
+                {editing && (
+                    <button className='danger' onClick={() => borrarItem(props.item.id)}>
+                        <Remove />
+                    </button>
+                )}
+                {editing ? (
+                    <input
+                        placeholder="Lista"
+                        className="nombrew "
+                        name="nombre"
+                        type="text"
+                        disabled={!editing}
+                        defaultValue={props.item.nombre}
+                    />
+                ) : (
+                    <p className="cantidad" data-comprado={props.item.comprado}>
+                        {props.item.nombre}
+                    </p>
+                )}
+            </form> */}
             <ul>
-                {pendiente.map(({item, i}) => (
+                {pendiente.map((item) => (
                     <ItemLista 
                         item={item}
-                        key={item.uid}
-                        onChange={(nuevo) => cambiarItem(i, nuevo)}
-                        onDelete={() => borrarItem(i)}
+                        key={item.id}
+                        // onChange={(nuevo) => editarItem(nuevo)}
+                        // onDelete={() => borrarItem(i)}
                     />
                 ))}
                 {pendiente.length > 0 && comprado.length > 0 && <h2>Comprado</h2>}
-                {comprado.map(({item, i}) => (
+                {comprado.map((item) => (
                     <ItemLista 
                         item={item}
-                        key={item.uid}
-                        onChange={(nuevo) => cambiarItem(i, nuevo)}
-                        onDelete={() => borrarItem(i)}
+                        key={item.id}
+                        // onChange={(nuevo) => cambiarItem(i, nuevo)}
+                        // onDelete={() => borrarItem(item.id)}
                     />
                 ))}
             </ul>
-            <form action="#" onSubmit={agregarItem}>
+            <form action="#" onSubmit={onSubmit}>
                 <div className="producto-inputs">
                     <input placeholder="Producto" className="nombre" name="nombre" type="text" />
                     <div className="cantidad">
